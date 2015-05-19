@@ -1,10 +1,15 @@
 require 'sinatra/base'
 require 'data_mapper'
 
-class BookmarkManager < Sinatra::Bas
-  e
+class BookmarkManager < Sinatra::Base
+  # get '/' do
+  #   'Hello BookmarkManager!'
+  # end
+
   get '/' do
-    'Hello BookmarkManager!'
+  @links = Link.all
+  erb :index
+  'Hello Makers Academy'
   end
 
 env = ENV['RACK_ENV'] || 'development'
