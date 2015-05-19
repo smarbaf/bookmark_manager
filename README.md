@@ -1,4 +1,5 @@
-h1 bookmark_manager
+bookmark_manager
+
 The bookmark manager website will have the following functionality:
 
 Show a list of links from the database
