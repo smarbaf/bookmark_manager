@@ -7,9 +7,15 @@ class BookmarkManager < Sinatra::Base
   # end
 
   get '/' do
-  @links = Link.all
-  erb :index
-  'Hello Makers Academy'
+    @links = Link.all
+    erb :index
+  end
+
+  post '/links' do
+    url = params['url']
+    title = params['title']
+    Link.create(url: url, title: title)
+    redirect to('/')
   end
 
 env = ENV['RACK_ENV'] || 'development'
