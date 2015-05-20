@@ -8,4 +8,5 @@ group :test do
   gem 'capybara'
   gem 'rspec'
   gem 'database_cleaner'
+  gem 'bcrypt-ruby'
 end
