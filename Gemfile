@@ -9,4 +9,5 @@ group :test do
   gem 'rspec'
   gem 'database_cleaner'
   gem 'bcrypt-ruby'
+  gem 'rack-flash3'
 end

@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'data_mapper'
+require 'rack-flash'
 
 require_relative 'helpers/application'
 require_relative 'data_mapper_setup'
@@ -10,6 +11,7 @@ class BookmarkManager < Sinatra::Base
 
   enable :sessions
   set :session_secret, 'super secret'
+  use Rack::Flash
 
   get '/' do
     @links = Link.all
@@ -34,15 +36,21 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/users/new' do
+    @user = User.new
     erb :'users/new'
   end
 
   post '/users' do
-    user = User.create(email: params[:email],
+    @user = User.create(email: params[:email],
               password: params[:password],
               password_confirmation: params[:password_confirmation])
-    session[:user_id] = user.id
-    redirect to('/')
+    if @user.save
+      session[:user_id] = @user.id
+      redirect to('/')
+    else
+      flash[:notice] = 'Sorry, your passwords do not match'
+      erb :'users/new'
+    end
   end
 
 
