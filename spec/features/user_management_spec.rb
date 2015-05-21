@@ -27,4 +27,46 @@ feature 'User signs up' do
     click_button 'Sign up'
   end
 
+feature 'User signs in' do
+
+  before(:each) do
+    User.create(email: 'test@test.com',
+                password: 'test',
+                password_confirmation: 'test')
+  end
+
+  scenario 'with correct credentials' do
+    visit '/'
+    expect(page).not_to have_content('Welcome, test@test.com')
+    sign_in('test@test.com', 'test')
+    expect(page).to have_content('Welcome, test@test.com')
+  end
+
+  scenario 'with incorrect credentials' do
+    visit '/' #use /sessions/new in here
+    expect(page).not_to have_content('Welcome, test@test.com')
+    sign_in('test@test.com', 'wrong')
+    expect(page).not_to have_content('Welcome, test@test.com')
+  end
+
+# feature 'Recover password' do
+
+#   scenario 'Requesting a passwordrecovery token' do
+#     visit '/sessions/new'
+#     user = User.create(email: 'fiona@hotmail.com', password: 'secret', password_confirmation: 'secret')
+#     fill_in 'Email', with: user.email
+#     click_button 'Submit'
+# #     expect(user.password_recovery_token).to be_true
+# end
+
+
+  def sign_in(email, password)
+    visit '/sessions/new'
+    fill_in 'email', with: email
+    fill_in 'password', with: password
+    click_button 'Sign in'
+  end
+
+end
+
 end
