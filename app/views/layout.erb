@@ -1,7 +1,7 @@
 <body>
 
   <% if current_user %>
-    Welcome to Bookmark Manager, <%= current_user.email %>
+    Welcome, <%= current_user.email %>
   <% end %>
   <%= yield %>
 
