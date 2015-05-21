@@ -7,9 +7,7 @@ require_relative 'data_mapper_setup'
 
 class BookmarkManager < Sinatra::Base
   include Helpers
-  # get '/' do
-  #   'Hello BookmarkManager!'
-  # end
+
   enable :sessions
   set :session_secret, 'super secret'
 
@@ -22,8 +20,7 @@ class BookmarkManager < Sinatra::Base
     url = params['url']
     title = params['title']
     tags = params['tags'].split(' ').map do |tag|
-    #   # this will either find this tag or create
-    #   # it if it doesn't exist already
+
       Tag.first_or_create(text: tag)
     end
       Link.create(url: url, title: title, tags: tags)
@@ -42,7 +39,8 @@ class BookmarkManager < Sinatra::Base
 
   post '/users' do
     user = User.create(email: params[:email],
-              password: params[:password])
+              password: params[:password],
+              password_confirmation: params[:password_confirmation])
     session[:user_id] = user.id
     redirect to('/')
   end
