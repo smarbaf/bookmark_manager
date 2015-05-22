@@ -12,6 +12,9 @@ class BookmarkManager < Sinatra::Base
   enable :sessions
   set :session_secret, 'super secret'
   use Rack::Flash
+  use Rack::MethodOverride
+  set :partial_template_engine, :erb
+  set :public_folder, File.join(root, '../public')
 
   get '/' do
     @links = Link.all
@@ -57,6 +60,13 @@ class BookmarkManager < Sinatra::Base
     erb :'sessions/new'
   end
 
+  delete '/sessions' do
+    session.clear
+    flash[:notice] = 'Good bye!'
+    session[:user_id] = nil
+    redirect to('/')
+  end
+
   post '/sessions' do
     email, password = params[:email], params[:password]
     user = User.authenticate(email, password)
@@ -69,7 +79,5 @@ class BookmarkManager < Sinatra::Base
       end
   end
 
-
-  # start the server if ruby file executed directly
   run! if app_file == $0
 end
